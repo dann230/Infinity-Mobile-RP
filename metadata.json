@@ -1,0 +1,6 @@
+{
+  "name": "Infinity Mobile Roleplay Portal",
+  "description": "Comprehensive roleplay portal for Infinity Mobile featuring faction commands, staff dress codes, administration tracking dashboard, and player complaint system.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
