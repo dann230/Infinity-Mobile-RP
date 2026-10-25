@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { BookOpen, Shirt, AlertTriangle, UserCheck, Menu, X, LogOut, CheckCircle } from 'lucide-react';
+import { Shield, AlertTriangle, UserCheck, Menu, X, LogOut, CheckCircle, Download } from 'lucide-react';
 import { AdminUser } from '../types/roleplay';
 import infinityLogo from '../assets/images/infinity_logo.png';
 
 interface NavbarProps {
-  activeTab: 'factions' | 'dresscode' | 'complaints' | 'admin';
-  setActiveTab: (tab: 'factions' | 'dresscode' | 'complaints' | 'admin') => void;
+  activeTab: 'factions' | 'complaints' | 'admin';
+  setActiveTab: (tab: 'factions' | 'complaints' | 'admin') => void;
   adminUser: AdminUser | null;
   onOpenAdminLogin: () => void;
   onAdminLogout: () => void;
@@ -20,10 +20,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const handleNavClick = (tab: 'factions' | 'dresscode' | 'complaints' | 'admin') => {
+  const handleNavClick = (tab: 'factions' | 'complaints' | 'admin') => {
     setActiveTab(tab);
     setMobileMenuOpen(false);
   };
+
+  const APK_DOWNLOAD_URL = "https://www.dropbox.com/scl/fi/kygvl9xizmso7cmn1kbvl/Infinity-Mobile-RP.apk?rlkey=78vyq949lt9itvv9cn1dnqest&st=um3ltccj&dl=1";
 
   return (
     <header className="sticky top-0 z-50 bg-neutral-950/90 backdrop-blur-md border-b border-neutral-800">
@@ -56,20 +58,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                   : 'text-neutral-400 hover:text-white'
               }`}
             >
-              <BookOpen className="w-4 h-4" />
-              <span>Faction Commands</span>
-            </button>
-
-            <button
-              onClick={() => handleNavClick('dresscode')}
-              className={`flex items-center gap-1.5 transition-colors whitespace-nowrap py-1 ${
-                activeTab === 'dresscode'
-                  ? 'text-cyan-400 font-semibold'
-                  : 'text-neutral-400 hover:text-white'
-              }`}
-            >
-              <Shirt className="w-4 h-4" />
-              <span>Staff Dress Code</span>
+              <Shield className="w-4 h-4" />
+              <span>Factions</span>
             </button>
 
             <button
@@ -97,8 +87,19 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </nav>
 
-          {/* Zone 3: 1 primary action */}
+          {/* Zone 3: Actions */}
           <div className="flex items-center gap-3 shrink-0">
+            {/* Quick Game Download Link */}
+            <a
+              href={APK_DOWNLOAD_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-neutral-900 bg-cyan-400 hover:bg-cyan-300 rounded-lg transition-colors shadow-sm shadow-cyan-400/20 whitespace-nowrap"
+            >
+              <Download className="w-3.5 h-3.5 stroke-[2.5]" />
+              <span>Download APK</span>
+            </a>
+
             {adminUser ? (
               <div className="hidden sm:flex items-center gap-3">
                 <div className="flex items-center gap-2 text-xs text-neutral-300 bg-neutral-900 border border-neutral-800 px-3 py-1.5 rounded-lg">
@@ -118,7 +119,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             ) : (
               <button
                 onClick={onOpenAdminLogin}
-                className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-neutral-950 bg-cyan-400 hover:bg-cyan-300 rounded-lg transition-colors shadow-sm shadow-cyan-400/20 whitespace-nowrap"
+                className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-neutral-300 hover:text-white bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-lg transition-colors whitespace-nowrap"
               >
                 <UserCheck className="w-3.5 h-3.5" />
                 <span>Admin Sign In</span>
@@ -140,6 +141,17 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-neutral-800 bg-neutral-950/95 px-4 pt-3 pb-5 space-y-2">
+          {/* Direct APK Download Banner on Mobile */}
+          <a
+            href={APK_DOWNLOAD_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-xs font-bold text-neutral-950 bg-cyan-400 hover:bg-cyan-300 transition-colors shadow-sm"
+          >
+            <Download className="w-4 h-4 stroke-[2.5]" />
+            <span>Download Game APK</span>
+          </a>
+
           <button
             onClick={() => handleNavClick('factions')}
             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-left transition-colors ${
@@ -148,20 +160,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                 : 'text-neutral-300 hover:bg-neutral-900'
             }`}
           >
-            <BookOpen className="w-4 h-4 text-cyan-400" />
-            <span>Faction Commands</span>
-          </button>
-
-          <button
-            onClick={() => handleNavClick('dresscode')}
-            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-left transition-colors ${
-              activeTab === 'dresscode'
-                ? 'bg-neutral-900 text-cyan-400 border border-neutral-800'
-                : 'text-neutral-300 hover:bg-neutral-900'
-            }`}
-          >
-            <Shirt className="w-4 h-4 text-cyan-400" />
-            <span>Staff Dress Code (Male & Female)</span>
+            <Shield className="w-4 h-4 text-cyan-400" />
+            <span>All Factions</span>
           </button>
 
           <button
@@ -211,7 +211,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onOpenAdminLogin();
                   setMobileMenuOpen(false);
                 }}
-                className="w-full flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-neutral-950 bg-cyan-400 rounded-lg"
+                className="w-full flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-neutral-300 hover:text-white bg-neutral-900 border border-neutral-800 rounded-lg"
               >
                 <UserCheck className="w-4 h-4" />
                 <span>Admin Sign In</span>

@@ -3,10 +3,12 @@ import { Smartphone, ExternalLink, HelpCircle } from 'lucide-react';
 import infinityLogo from '../assets/images/infinity_logo.png';
 
 interface FooterProps {
-  onNavigate: (tab: 'factions' | 'dresscode' | 'complaints' | 'admin') => void;
+  onNavigate: (tab: 'factions' | 'complaints' | 'admin') => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+  const APK_DOWNLOAD_URL = "https://www.dropbox.com/scl/fi/kygvl9xizmso7cmn1kbvl/Infinity-Mobile-RP.apk?rlkey=78vyq949lt9itvv9cn1dnqest&st=um3ltccj&dl=1";
+
   return (
     <footer className="border-t border-neutral-800 bg-neutral-950 text-neutral-400 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -22,12 +24,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <span>Infinity Mobile</span>
             </div>
             <p className="text-neutral-400 text-xs leading-relaxed max-w-sm">
-              The official roleplay simulation portal for Infinity Mobile. Comprehensive faction command documentation, staff dress codes, player reporting system, and administrative oversight.
+              The official roleplay simulation portal for Infinity Mobile. Standardized 1–10 rank hierarchy, comprehensive faction slash commands, player reporting system, and administrative oversight.
             </p>
             <div className="flex items-center gap-2 text-[11px] text-neutral-500 pt-1">
               <span>Infinity Mobile Roleplay</span>
               <span aria-hidden="true">·</span>
-              <span>Mobile Client Version 2.4</span>
+              <span>Official Client APK</span>
             </div>
           </div>
 
@@ -42,16 +44,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('factions')}
                   className="hover:text-cyan-400 transition-colors"
                 >
-                  Faction Commands Catalog
+                  All Factions Directory
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('dresscode')}
-                  className="hover:text-cyan-400 transition-colors"
+                <a
+                  href={APK_DOWNLOAD_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cyan-400 hover:text-cyan-300 font-medium transition-colors"
                 >
-                  Staff Dress Codes (Male & Female)
-                </button>
+                  Download Game APK
+                </a>
               </li>
               <li>
                 <button

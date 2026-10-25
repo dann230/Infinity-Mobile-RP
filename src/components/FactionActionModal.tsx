@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { Faction, FactionRankTier } from '../types/roleplay';
-import { DressCodeViewer } from './DressCodeViewer';
 import { 
   X, 
   Terminal, 
-  Shirt, 
   Award, 
   Users, 
   Copy, 
@@ -21,7 +19,7 @@ interface FactionActionModalProps {
   faction: Faction | null;
   isOpen: boolean;
   onClose: () => void;
-  defaultAction?: 'commands' | 'dresscode' | 'ranks' | 'roster';
+  defaultAction?: 'commands' | 'ranks' | 'roster';
 }
 
 export const FactionActionModal: React.FC<FactionActionModalProps> = ({
@@ -30,7 +28,7 @@ export const FactionActionModal: React.FC<FactionActionModalProps> = ({
   onClose,
   defaultAction = 'commands'
 }) => {
-  const [activeTab, setActiveTab] = useState<'commands' | 'dresscode' | 'ranks' | 'roster'>(defaultAction);
+  const [activeTab, setActiveTab] = useState<'commands' | 'ranks' | 'roster'>(defaultAction);
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedCmd, setCopiedCmd] = useState<string | null>(null);
 
@@ -73,9 +71,9 @@ export const FactionActionModal: React.FC<FactionActionModalProps> = ({
                 {faction.name}
               </h2>
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-neutral-400 mt-1">
-                <span>Leader (Rank 10): <strong className="text-white font-mono">{faction.currentLeader}</strong></span>
+                <span>Rank Hierarchy: <strong className="text-white font-mono">10 Standard Tiers</strong></span>
                 <span aria-hidden="true">·</span>
-                <span>Deputies (Rank 9): <strong className="text-cyan-300 font-mono">{faction.deputies.length} / 3 DEPs</strong></span>
+                <span>Deputies (Rank 9): <strong className="text-cyan-300 font-mono">3 DEPs Maximum</strong></span>
               </div>
             </div>
           </div>
@@ -89,7 +87,7 @@ export const FactionActionModal: React.FC<FactionActionModalProps> = ({
           </button>
         </div>
 
-        {/* Action Selection Bar (Commands, Dress Code, Ranks, Roster) */}
+        {/* Action Selection Bar (Commands, Ranks, Roster) */}
         <div className="flex items-center gap-1 sm:gap-2 px-4 sm:px-6 py-2.5 bg-neutral-950 border-b border-neutral-800 overflow-x-auto scrollbar-none">
           <button
             onClick={() => setActiveTab('commands')}
@@ -104,18 +102,6 @@ export const FactionActionModal: React.FC<FactionActionModalProps> = ({
           </button>
 
           <button
-            onClick={() => setActiveTab('dresscode')}
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
-              activeTab === 'dresscode'
-                ? 'bg-neutral-800 text-cyan-300 border border-neutral-700 shadow-sm'
-                : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
-            }`}
-          >
-            <Shirt className="w-4 h-4 text-cyan-400" />
-            <span>Dress Code (Male & Female)</span>
-          </button>
-
-          <button
             onClick={() => setActiveTab('ranks')}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
               activeTab === 'ranks'
@@ -124,7 +110,7 @@ export const FactionActionModal: React.FC<FactionActionModalProps> = ({
             }`}
           >
             <Award className="w-4 h-4 text-cyan-400" />
-            <span>Ranks 1–10 & Deputies</span>
+            <span>Ranks 1–10 Structure</span>
           </button>
 
           <button
@@ -136,7 +122,7 @@ export const FactionActionModal: React.FC<FactionActionModalProps> = ({
             }`}
           >
             <Users className="w-4 h-4 text-cyan-400" />
-            <span>Roster & Quota Activity</span>
+            <span>Department Roster</span>
           </button>
         </div>
 
@@ -215,14 +201,7 @@ export const FactionActionModal: React.FC<FactionActionModalProps> = ({
             </div>
           )}
 
-          {/* TAB 2: DRESS CODE */}
-          {activeTab === 'dresscode' && (
-            <div>
-              <DressCodeViewer faction={faction} />
-            </div>
-          )}
-
-          {/* TAB 3: RANKS 1-10 & DEPUTIES */}
+          {/* TAB 2: RANKS 1-10 & DEPUTIES */}
           {activeTab === 'ranks' && (
             <div className="space-y-6">
               <div className="p-4 bg-neutral-950 border border-neutral-800 rounded-xl space-y-2">
@@ -232,7 +211,7 @@ export const FactionActionModal: React.FC<FactionActionModalProps> = ({
                 </div>
                 <p className="text-xs text-neutral-300 leading-relaxed">
                   Every faction in Infinity Mobile operates on a strictly calibrated 10-rank hierarchy. 
-                  <strong className="text-white"> Rank 10 is the singular Supreme Leader</strong>, and 
+                  <strong className="text-white"> Rank 10 is the singular Supreme Leader position</strong>, and 
                   <strong className="text-cyan-300"> Rank 9 is Deputy Leader with a hard quota of exactly 3 DEPs maximum</strong>.
                 </p>
               </div>
@@ -278,16 +257,16 @@ export const FactionActionModal: React.FC<FactionActionModalProps> = ({
                       </div>
                     </div>
 
-                    {/* Deputy/Leader Slot status */}
+                    {/* Deputy/Leader Slot status - no leader name or vacant */}
                     <div className="shrink-0 sm:text-right text-xs">
                       {rank.isLeader && (
                         <div className="text-amber-300 font-mono font-semibold">
-                          Current: {faction.currentLeader}
+                          Rank 10 Authority
                         </div>
                       )}
                       {rank.isDeputy && (
                         <div className="text-cyan-300 font-mono font-medium">
-                          Active: {faction.deputies.join(', ')}
+                          Rank 9 (Max 3 DEPs)
                         </div>
                       )}
                       {!rank.isLeader && !rank.isDeputy && (
@@ -300,7 +279,7 @@ export const FactionActionModal: React.FC<FactionActionModalProps> = ({
             </div>
           )}
 
-          {/* TAB 4: ROSTER & QUOTA ACTIVITY */}
+          {/* TAB 3: ROSTER & QUOTA ACTIVITY */}
           {activeTab === 'roster' && (
             <div className="space-y-5">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -334,18 +313,13 @@ export const FactionActionModal: React.FC<FactionActionModalProps> = ({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-neutral-800/80 text-neutral-200">
-                    {faction.members.map((member) => (
+                    {faction.members.filter((m) => m.rankLevel < 10).map((member) => (
                       <tr key={member.id} className="hover:bg-neutral-950/40">
                         <td className="py-2.5 px-3 font-mono font-medium text-white flex items-center gap-1.5">
                           <span>{member.name}</span>
                           {member.isDeputySlot && (
                             <span className="text-[9px] bg-cyan-950 text-cyan-300 border border-cyan-800 px-1 rounded font-sans">
                               DEP
-                            </span>
-                          )}
-                          {member.rankLevel === 10 && (
-                            <span className="text-[9px] bg-amber-950 text-amber-300 border border-amber-800 px-1 rounded font-sans">
-                              LEADER
                             </span>
                           )}
                         </td>

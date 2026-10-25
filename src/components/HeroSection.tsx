@@ -3,20 +3,17 @@ import { Faction } from '../types/roleplay';
 import { FACTIONS_DATA } from '../data/factionsData';
 import { 
   Terminal, 
-  Shirt, 
   Award, 
   Users, 
-  ArrowRight, 
   Shield, 
   Skull, 
-  ChevronRight,
-  Sparkles
+  Download
 } from 'lucide-react';
 import heroBanner from '../assets/images/infinity_hero_banner_1791582889853.jpg';
 
 interface HeroSectionProps {
   factionsList?: Faction[];
-  onSelectFactionAction: (faction: Faction, action: 'commands' | 'dresscode' | 'ranks' | 'roster') => void;
+  onSelectFactionAction: (faction: Faction, action: 'commands' | 'ranks' | 'roster') => void;
   onOpenComplaints: () => void;
 }
 
@@ -26,6 +23,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onOpenComplaints
 }) => {
   const [sectorFilter, setSectorFilter] = useState<'all' | 'state' | 'ocg'>('all');
+
+  const APK_DOWNLOAD_URL = "https://www.dropbox.com/scl/fi/kygvl9xizmso7cmn1kbvl/Infinity-Mobile-RP.apk?rlkey=78vyq949lt9itvv9cn1dnqest&st=um3ltccj&dl=1";
 
   const stateFactions = factionsList.filter((f) => f.sector === 'state');
   const ocgFactions = factionsList.filter((f) => f.sector === 'ocg');
@@ -58,24 +57,36 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <span aria-hidden="true">·</span>
             <span>Official Portal</span>
             <span aria-hidden="true">·</span>
-            <span className="text-amber-400">Under Active Development</span>
+            <span className="text-emerald-400">Game Client APK Available</span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
-            Explore Factions, Commands, Dress Codes & Administration
+            Explore Factions, Commands, Rank Structures & Administration
           </h1>
 
           <p className="text-sm sm:text-base text-neutral-300 max-w-2xl leading-relaxed">
-            All official factions operate with a standardized <strong>1–10 Rank Hierarchy</strong> (Rank 10 Leader, Rank 9 Deputy with strictly 3 DEPs). Select any faction below to view slash commands, staff dress codes, or department rosters.
+            All official factions operate with a standardized <strong>1–10 Rank Hierarchy</strong> with strictly 3 DEPs maximum at Rank 9. Select any faction below to view slash commands, rank responsibilities, and department rosters.
           </p>
 
-          <div className="flex items-center gap-3 pt-1">
+          {/* Download Game APK & Primary Action Buttons */}
+          <div className="flex flex-wrap items-center gap-3 pt-2">
+            <a
+              href={APK_DOWNLOAD_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-400 via-cyan-300 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-neutral-950 font-extrabold text-xs sm:text-sm rounded-xl transition-all shadow-lg shadow-cyan-400/25 hover:shadow-cyan-400/40 hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <Download className="w-4 h-4 stroke-[2.5]" />
+              <span>Download Game APK</span>
+            </a>
+
             <button
               onClick={onOpenComplaints}
-              className="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-neutral-950 font-bold text-xs sm:text-sm rounded-lg transition-colors shadow-sm shadow-amber-400/20"
+              className="px-4 py-2.5 bg-neutral-900 hover:bg-neutral-800 text-neutral-200 hover:text-white border border-neutral-700 font-bold text-xs sm:text-sm rounded-xl transition-colors"
             >
               File Player Complaint
             </button>
+
             <span className="text-xs text-neutral-400 font-mono">
               {factionsList.length} Total Factions ({stateFactions.length} State · {ocgFactions.length} OCG)
             </span>
@@ -90,7 +101,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 All Infinity Mobile Factions
               </h2>
               <p className="text-xs text-neutral-400 mt-0.5">
-                Click any faction card to open the interactive options menu (Commands, Dress Code, Ranks, Roster).
+                Click any faction card to select what you need to see (Commands, Ranks 1–10, Roster).
               </p>
             </div>
 
@@ -165,12 +176,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                       {faction.tagline}
                     </p>
 
-                    {/* Leader and Deputy Summary */}
-                    <div className="p-2.5 bg-neutral-950/70 border border-neutral-800/80 rounded-xl space-y-1 text-xs">
+                    {/* Faction Structure Summary (no leader name, no vacant) */}
+                    <div className="p-2.5 bg-neutral-950/70 border border-neutral-800/80 rounded-xl space-y-1.5 text-xs">
                       <div className="flex items-center justify-between">
-                        <span className="text-neutral-500">Leader (Rank 10):</span>
-                        <span className="font-mono text-white font-medium truncate max-w-[170px]">
-                          {faction.currentLeader}
+                        <span className="text-neutral-500">Rank Structure:</span>
+                        <span className="font-mono text-neutral-300 font-medium">
+                          10 Standard Ranks
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
@@ -182,42 +193,37 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     </div>
                   </div>
 
-                  {/* Interactive Options Menu buttons */}
+                  {/* Interactive Options Menu buttons (Commands, Ranks, Roster) */}
                   <div className="pt-2 border-t border-neutral-800/80 space-y-2">
                     <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-500 block">
                       Select What To View:
                     </span>
-                    <div className="grid grid-cols-2 gap-1.5">
+                    <div className="grid grid-cols-3 gap-1.5">
                       <button
                         onClick={() => onSelectFactionAction(faction, 'commands')}
-                        className="flex items-center justify-center gap-1.5 px-2.5 py-1.5 bg-neutral-950 hover:bg-neutral-800 text-neutral-200 hover:text-cyan-300 border border-neutral-800 rounded-lg text-xs font-medium transition-colors"
+                        className="flex items-center justify-center gap-1.5 px-2 py-2 bg-neutral-950 hover:bg-neutral-800 text-neutral-200 hover:text-cyan-300 border border-neutral-800 rounded-lg text-xs font-medium transition-colors"
+                        title="View commands"
                       >
-                        <Terminal className="w-3.5 h-3.5 text-cyan-400" />
-                        <span>Commands</span>
-                      </button>
-
-                      <button
-                        onClick={() => onSelectFactionAction(faction, 'dresscode')}
-                        className="flex items-center justify-center gap-1.5 px-2.5 py-1.5 bg-neutral-950 hover:bg-neutral-800 text-neutral-200 hover:text-cyan-300 border border-neutral-800 rounded-lg text-xs font-medium transition-colors"
-                      >
-                        <Shirt className="w-3.5 h-3.5 text-cyan-400" />
-                        <span>Dress Code</span>
+                        <Terminal className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                        <span className="truncate">Commands</span>
                       </button>
 
                       <button
                         onClick={() => onSelectFactionAction(faction, 'ranks')}
-                        className="flex items-center justify-center gap-1.5 px-2.5 py-1.5 bg-neutral-950 hover:bg-neutral-800 text-neutral-200 hover:text-cyan-300 border border-neutral-800 rounded-lg text-xs font-medium transition-colors"
+                        className="flex items-center justify-center gap-1.5 px-2 py-2 bg-neutral-950 hover:bg-neutral-800 text-neutral-200 hover:text-cyan-300 border border-neutral-800 rounded-lg text-xs font-medium transition-colors"
+                        title="View rank hierarchy"
                       >
-                        <Award className="w-3.5 h-3.5 text-cyan-400" />
-                        <span>Ranks (1-10)</span>
+                        <Award className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                        <span className="truncate">Ranks (1-10)</span>
                       </button>
 
                       <button
                         onClick={() => onSelectFactionAction(faction, 'roster')}
-                        className="flex items-center justify-center gap-1.5 px-2.5 py-1.5 bg-neutral-950 hover:bg-neutral-800 text-neutral-200 hover:text-cyan-300 border border-neutral-800 rounded-lg text-xs font-medium transition-colors"
+                        className="flex items-center justify-center gap-1.5 px-2 py-2 bg-neutral-950 hover:bg-neutral-800 text-neutral-200 hover:text-cyan-300 border border-neutral-800 rounded-lg text-xs font-medium transition-colors"
+                        title="View roster"
                       >
-                        <Users className="w-3.5 h-3.5 text-cyan-400" />
-                        <span>Roster</span>
+                        <Users className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                        <span className="truncate">Roster</span>
                       </button>
                     </div>
                   </div>
